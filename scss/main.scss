@@ -1,0 +1,19 @@
+@import "colours";
+@import "popup";
+
+body {
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+html {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+*, *:before, *:after {
+  -webkit-box-sizing: inherit;
+  -moz-box-sizing: inherit;
+  box-sizing: inherit;
+}
