@@ -20,3 +20,12 @@
   -moz-box-shadow: $horiz $vert $blur $spread $color;
   box-shadow: $horiz $vert $blur $spread $color;
 }
+
+//Rotate text
+@mixin rotateText($deg: rotate(90deg)) {
+  transform: $deg;
+  -webkit-transform: $deg;
+  -moz-transform: $deg;
+  -ms-transform: $deg;
+  -o-transform: $deg;
+}
