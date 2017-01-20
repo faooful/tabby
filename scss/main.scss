@@ -1,10 +1,14 @@
 @import "colours";
+@import "typography";
+@import "mixins";
 @import "popup";
+@import "boardsPannel";
 
 body {
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
+  background: $lblue;
 }
 
 html {
