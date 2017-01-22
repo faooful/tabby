@@ -1,0 +1,35 @@
+@import 'src/palette.css';
+
+.clipboard {
+  width: 100%;
+  margin-top: 20px;
+}
+
+.popupContainer {
+  width: 300px;
+  margin: auto;
+  padding-top: 60px;
+}
+
+.popupButtonContainer {
+  display: flex;
+  flex-direction: row;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  box-shadow: 0 -1px 0 rgba(40, 51, 75, 0.1);
+}
+
+.popupButton {
+  width: 50%;
+  padding: 20px;
+  text-align: center;
+  cursor: pointer;
+  &:hover {
+    background: $lgrey;
+  }
+}
