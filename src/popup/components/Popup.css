@@ -18,7 +18,7 @@
   padding: 0;
   list-style: none;
   font-size: 12px;
-  font-weight: 700;
+  font-weight: bold;
   letter-spacing: 1px;
   text-transform: uppercase;
   box-shadow: 0 -1px 0 rgba(40, 51, 75, 0.1);
@@ -29,6 +29,7 @@
   padding: 20px;
   text-align: center;
   cursor: pointer;
+
   &:hover {
     background: $lgrey;
   }

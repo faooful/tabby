@@ -1,7 +1,5 @@
 import { applyMiddleware, compose, createStore, combineReducers } from 'redux'
-import { browserHistory } from 'react-router'
 import thunkMiddleware from 'redux-thunk'
-import persistState from 'redux-localstorage'
 import * as reducers from 'src/reducers'
 
 const store = compose(

@@ -1,14 +1,11 @@
-import React, { PureComponent, PropTypes } from 'react'
-import classNames from 'classnames'
+/* eslint-disable no-undef */
+
+import React, { PureComponent } from 'react'
 import { autobind } from 'core-decorators'
 
 import styles from 'src/popup/components/Popup.css'
 
 export default class Popup extends PureComponent {
-  static propTypes = {
-    className: PropTypes.string
-  };
-
   constructor(props) {
     super(props)
 
@@ -29,10 +26,7 @@ export default class Popup extends PureComponent {
   }
 
   render() {
-    const { className } = this.props
     const { clipboard } = this.state
-    const computedClassName = classNames(styles.Popup, className)
-
     return (
       <div className={styles.popupContainer}>
         <div className={styles.popupButtonContainer}>
