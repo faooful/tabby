@@ -20,4 +20,13 @@ function renderApp() {
   )
 }
 
+if (module.hot) {
+  module.hot.accept('src/home/components/HomePage', () => {
+    // If you use Webpack 2 in ES modules mode, you can
+    // use `routes` here rather than require() a `newRoutes`.
+    const newRoutes = require('src/home/components/HomePage').default
+    renderApp(newRoutes)
+  })
+}
+
 setTimeout(() => renderApp(), 0)
