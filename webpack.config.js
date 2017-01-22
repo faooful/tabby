@@ -20,11 +20,11 @@ const devServerEntries = [
 const developmentEntry = {
   popup: [
     ...devServerEntries,
-    path.join(sourceRoot, 'js', 'popup.js')
+    path.join(sourceRoot, 'popupIndex.js')
   ],
   home: [
     ...devServerEntries,
-    path.join(sourceRoot, 'js', 'home.js')
+    path.join(sourceRoot, 'homeIndex.js')
   ]
 }
 

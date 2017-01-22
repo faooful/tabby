@@ -1,0 +1,19 @@
+.subHeading {
+  position: absolute;
+  top: 100px;
+  right: 0;
+  color: #888888;
+  font-size: 16px;
+  font-weight: 800;
+  transform: rotate(90deg);
+}
+
+.boardsPanelContainer {
+  width: 260px;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background: $white;
+  @include box-shadow;
+}
