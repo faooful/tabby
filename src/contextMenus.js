@@ -1,3 +1,4 @@
+// TODO: store image in local storage to handle case when home tab isn't open
 chrome.contextMenus.create({
   title: 'Use URL of image somehow',
   contexts: ['image'],
