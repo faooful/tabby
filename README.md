@@ -19,3 +19,6 @@
 - Click the Tabby context menu button.
 - Go to Tabby Home tab.
 - Image URL should appear in console.
+
+### If everything is broken or your updates aren't appearing
+- Refresh the extension via chrome://extensions/
