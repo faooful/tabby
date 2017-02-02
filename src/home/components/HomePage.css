@@ -11,7 +11,7 @@
   position: absolute;
   top: 100px;
   right: 0;
-  color: #888888;
+  color: var(--white);
   font-size: 16px;
   font-weight: 800;
   transform: rotate(90deg);
@@ -21,7 +21,7 @@
   width: 20em;
   height: 100%;
   position: relative;
-  background: var(--white);
+  background: var(--dark-grey);
   box-shadow: 0 0 0.4em 0 rgba(13, 26, 44, 0.2);
 }
 
