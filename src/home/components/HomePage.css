@@ -1,21 +1,36 @@
 @import 'src/palette.css';
 
+.HomePage {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: row;
+}
+
 .subHeading {
   position: absolute;
   top: 100px;
   right: 0;
-  color: #888888;
+  color: var(--white);
   font-size: 16px;
   font-weight: 800;
   transform: rotate(90deg);
 }
 
-.boardsPanelContainer {
-  width: 260px;
+.boardsPanel {
+  width: 20em;
   height: 100%;
-  position: absolute;
-  top: 0;
-  left: 0;
-  background: var(--white);
+  position: relative;
+  background: var(--dark-grey);
   box-shadow: 0 0 0.4em 0 rgba(13, 26, 44, 0.2);
+}
+
+.moodboardContainer {
+  width: calc(100% - 20em);
+  height: 100%;
+}
+
+.currentMoodboard {
+  width: 100%;
+  height: 100%;
 }

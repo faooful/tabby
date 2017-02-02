@@ -47,6 +47,7 @@ const commonPlugins = [
   new WriteFilePlugin(),
   new CopyWebpackPlugin([
     { from: 'manifest.json' },
+    { from: path.join(sourceRoot, 'contextMenus.js') },
     { from: 'icon.png' }
   ])
 ]
