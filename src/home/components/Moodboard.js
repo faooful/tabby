@@ -8,12 +8,30 @@ export default class Moodboard extends PureComponent {
     className: PropTypes.string
   };
 
+  componentWillMount() {
+    chrome.extension.onMessage.addListener(message => {
+      this.drawImageOnCanvas(message.url)
+    })
+  }
+
+  drawImageOnCanvas(imageUrl) {
+    const context = this.canvas.getContext('2d')
+    const image = new Image()
+    image.onload = function () {
+      context.drawImage(image, 0, 0)
+    }
+    image.src = imageUrl
+  }
+
   render() {
     const computedClass = classNames(this.props.className, styles.Moodboard)
 
     return (
       <div className={computedClass}>
-        <canvas className={styles.moodboardCanvas}></canvas>
+        <canvas
+          className={styles.moodboardCanvas}
+          ref={canvas => (this.canvas = canvas)}
+        ></canvas>
       </div>
     )
   }

@@ -8,10 +8,6 @@ import HomePage from 'src/home/components/HomePage'
 
 import 'src/base.css'
 
-chrome.extension.onMessage.addListener(message => {
-  console.log(message.url)
-})
-
 const rootElement = document.getElementById('root')
 function renderApp() {
   ReactDOM.render(
