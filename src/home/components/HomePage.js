@@ -10,16 +10,21 @@ export default class HomePage extends PureComponent {
       <MoodboardPreview className={styles.moodboardPreview} title={title} date={date} />
     )
   }
+
   render() {
-    const previewTitleList = [ 'Exploration board', 'Icon inspiration' ]
-    const previewDateList = [ 'Created 13/01/16', 'Created 16/01/16' ]
+    const previewList = {
+      'Exploration board': 'Created 13/01/16',
+      'Icon inspiration': 'Created 16/01/16'
+    }
     return (
       <div className={styles.HomePage}>
         <div className={styles.boardsPanel}>
           <p className={styles.subHeading}>BOARDS</p>
           <div className={styles.previewList}>
-            {previewTitleList.map(this.renderPreview)}
-            {previewDateList.map(this.renderPreview)}
+            {Object.keys(previewList).map((key, i) => {
+              return this.renderPreview(key, previewList[key])
+            })}
+
           </div>
         </div>
         <div className={styles.moodboardContainer}>
