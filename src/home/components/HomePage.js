@@ -5,7 +5,7 @@ import MoodboardPreview from 'src/home/components/MoodboardPreview.js'
 import styles from 'src/home/components/HomePage.css'
 
 export default class HomePage extends PureComponent {
-  renderPreview(title, date) {
+  renderPreview(photo, title, date) {
     return (
       <MoodboardPreview className={styles.moodboardPreview} photo={photo} title={title} date={date} />
     )
