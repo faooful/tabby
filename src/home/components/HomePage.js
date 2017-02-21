@@ -17,7 +17,6 @@ export default class HomePage extends PureComponent {
         photo: 'http://lorempixel.com/400/200/',
         title: 'Exploration board',
         date: '13/01/2016' // TODO this should be an actual timestamp
-
       },
       {
         photo: 'http://lorempixel.com/400/200/',
@@ -34,7 +33,6 @@ export default class HomePage extends PureComponent {
             {previewList.map((item, i) => {
               return this.renderPreview(item.photo, item.title, item.date)
             })}
-
           </div>
         </div>
         <div className={styles.moodboardContainer}>
