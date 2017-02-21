@@ -16,6 +16,8 @@ export default class Moodboard extends PureComponent {
       image: null,
       imageX: 0,
       imageY: 0,
+      mouseImageOffsetX: 0,
+      mouseImageOffsetY: 0,
       imageWidth: 0,
       imageHeight: 0,
       dragging: false
@@ -60,11 +62,11 @@ export default class Moodboard extends PureComponent {
   @autobind
   handleMouseMove(e) {
     const context = this.getContext()
-    const { image, imageWidth, imageHeight } = this.state
+    const { image, imageWidth, imageHeight, mouseImageOffsetX, mouseImageOffsetY } = this.state
     if (this.state.dragging) {
       this.setState({ imageX: e.offsetX, imageY: e.offsetY })
       context.clearRect(0, 0, this.canvas.width, this.canvas.height)
-      context.drawImage(image, e.offsetX, e.offsetY, imageWidth, imageHeight)
+      context.drawImage(image, e.offsetX - mouseImageOffsetX, e.offsetY - mouseImageOffsetY, imageWidth, imageHeight)
     }
   }
 
@@ -73,7 +75,11 @@ export default class Moodboard extends PureComponent {
     const { imageX, imageY, imageWidth, imageHeight } = this.state
     if (e.offsetX >= imageX && e.offsetX <= imageX + imageWidth &&
         e.offsetY >= imageY && e.offsetY <= imageY + imageHeight) {
-      this.setState({ dragging: true })
+      this.setState({
+        dragging: true,
+        mouseImageOffsetX: e.offsetX - imageX,
+        mouseImageOffsetY: e.offsetY - imageY
+      })
     }
   }
 
