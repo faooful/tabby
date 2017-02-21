@@ -18,7 +18,12 @@ export default class Moodboard extends PureComponent {
     const context = this.canvas.getContext('2d')
     const image = new Image()
     image.onload = function () {
-      context.drawImage(image, 0, 0)
+      const reductionFactor = (this.width > this.height) ?
+        this.width / 500 :
+        this.height / 500
+      const width = this.width / reductionFactor
+      const height = this.height / reductionFactor
+      context.drawImage(image, 0, 0, width, height)
     }
     image.src = imageUrl
   }
