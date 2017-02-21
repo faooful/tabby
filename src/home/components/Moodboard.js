@@ -64,9 +64,11 @@ export default class Moodboard extends PureComponent {
     const context = this.getContext()
     const { image, imageWidth, imageHeight, mouseImageOffsetX, mouseImageOffsetY } = this.state
     if (this.state.dragging) {
-      this.setState({ imageX: e.offsetX, imageY: e.offsetY })
+      const imageX = e.offsetX - mouseImageOffsetX
+      const imageY = e.offsetY - mouseImageOffsetY
+      this.setState({ imageX, imageY })
       context.clearRect(0, 0, this.canvas.width, this.canvas.height)
-      context.drawImage(image, e.offsetX - mouseImageOffsetX, e.offsetY - mouseImageOffsetY, imageWidth, imageHeight)
+      context.drawImage(image, imageX, imageY, imageWidth, imageHeight)
     }
   }
 
