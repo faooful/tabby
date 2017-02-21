@@ -29,7 +29,7 @@ export default class HomePage extends PureComponent {
     return (
       <div className={styles.HomePage}>
         <div className={styles.boardsPanel}>
-          <p className={styles.subHeading}>BOARDS</p>
+          <p className={styles.subHeading}>BOARDS<span className={styles.titleLine}></span></p>
           <div className={styles.previewList}>
             {previewList.map((item, i) => {
               return this.renderPreview(item.photo, item.title, item.date)
