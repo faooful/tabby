@@ -25,7 +25,7 @@
 }
 
 .boardsPanel {
-  width: 20em;
+  width: 240px;
   height: 100%;
   position: relative;
   background: var(--dark-grey);
@@ -35,7 +35,7 @@
 }
 
 .moodboardContainer {
-  width: calc(100% - 20em);
+  width: calc(100% - 240px);
   height: 100%;
 }
 

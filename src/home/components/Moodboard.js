@@ -30,6 +30,8 @@ export default class Moodboard extends PureComponent {
       <div className={computedClass}>
         <canvas
           className={styles.moodboardCanvas}
+          width={window.innerWidth - 240}
+          height={window.innerHeight}
           ref={canvas => (this.canvas = canvas)}
         ></canvas>
       </div>
