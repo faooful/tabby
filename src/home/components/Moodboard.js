@@ -13,13 +13,10 @@ export default class Moodboard extends PureComponent {
     super(props)
 
     this.state = {
-      image: null,
-      imageX: 0,
-      imageY: 0,
+      images: [],
+      draggedImageIndex: -1,
       mouseImageOffsetX: 0,
       mouseImageOffsetY: 0,
-      imageWidth: 0,
-      imageHeight: 0,
       dragging: false
     }
   }
@@ -40,12 +37,32 @@ export default class Moodboard extends PureComponent {
     return this.canvas.getContext('2d')
   }
 
+  @autobind
+  addImage(image, width, height) {
+    this.setState({
+      images: [
+        ...this.state.images,
+        { image, width, height, x: 0, y: 0 }
+      ]
+    })
+  }
+
+  @autobind
+  updateDraggedImage(x, y) {
+    const { images, draggedImageIndex } = this.state
+    const { image, width, height } = images[draggedImageIndex]
+    this.setState({
+      images: [
+        ...images.slice(0, draggedImageIndex),
+        { image, width, height, x, y },
+        ...images.slice(draggedImageIndex + 1, images.length)
+      ]
+    })
+  }
+
   drawImageOnCanvas(imageUrl) {
-    const context = this.getContext()
-    const setDimensions = (imageWidth, imageHeight) =>
-      this.setState({ imageWidth, imageHeight })
+    const { addImage, redraw } = this
     const image = new Image()
-    this.setState({ image })
     image.onload = function () {
       const maxLength = 400
       const reductionFactor = Math.max((this.width > this.height) ?
@@ -53,35 +70,47 @@ export default class Moodboard extends PureComponent {
         this.height / maxLength, 1)
       const width = this.width / reductionFactor
       const height = this.height / reductionFactor
-      setDimensions(width, height)
-      context.drawImage(image, 0, 0, width, height)
+      addImage(image, width, height)
+      redraw()
     }
     image.src = imageUrl
   }
 
   @autobind
-  handleMouseMove(e) {
+  redraw() {
     const context = this.getContext()
-    const { image, imageWidth, imageHeight, mouseImageOffsetX, mouseImageOffsetY } = this.state
-    if (this.state.dragging) {
+    context.clearRect(0, 0, this.canvas.width, this.canvas.height)
+    for (let i = 0; i < this.state.images.length; i++) {
+      const image = this.state.images[i]
+      context.drawImage(image.image, image.x, image.y, image.width, image.height)
+    }
+  }
+
+  @autobind
+  handleMouseMove(e) {
+    const { mouseImageOffsetX, mouseImageOffsetY, dragging } = this.state
+    if (dragging) {
       const imageX = e.offsetX - mouseImageOffsetX
       const imageY = e.offsetY - mouseImageOffsetY
-      this.setState({ imageX, imageY })
-      context.clearRect(0, 0, this.canvas.width, this.canvas.height)
-      context.drawImage(image, imageX, imageY, imageWidth, imageHeight)
+      this.updateDraggedImage(imageX, imageY)
+      this.redraw()
     }
   }
 
   @autobind
   handleMouseDown(e) {
-    const { imageX, imageY, imageWidth, imageHeight } = this.state
-    if (e.offsetX >= imageX && e.offsetX <= imageX + imageWidth &&
-        e.offsetY >= imageY && e.offsetY <= imageY + imageHeight) {
-      this.setState({
-        dragging: true,
-        mouseImageOffsetX: e.offsetX - imageX,
-        mouseImageOffsetY: e.offsetY - imageY
-      })
+    for (let i = 0; i < this.state.images.length; i++) {
+      const { x, y, width, height } = this.state.images[i]
+      if (e.offsetX >= x && e.offsetX <= x + width &&
+          e.offsetY >= y && e.offsetY <= y + height) {
+        this.setState({
+          dragging: true,
+          mouseImageOffsetX: e.offsetX - x,
+          mouseImageOffsetY: e.offsetY - y,
+          draggedImageIndex: i
+        })
+        return
+      }
     }
   }
 
