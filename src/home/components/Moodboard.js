@@ -1,6 +1,7 @@
 import React, { PureComponent, PropTypes } from 'react'
 import classNames from 'classnames'
 import { autobind } from 'core-decorators'
+import spreadImages from '../../utils/spreadImages'
 
 import styles from 'src/home/components/Moodboard.css'
 
@@ -119,11 +120,18 @@ export default class Moodboard extends PureComponent {
     this.setState({ dragging: false })
   }
 
+  @autobind
+  handleImageSpreading() {
+    this.setState({ images: spreadImages(this.state.images) })
+    this.redraw()
+  }
+
   render() {
     const computedClass = classNames(this.props.className, styles.Moodboard)
 
     return (
       <div className={computedClass}>
+        <button onClick={this.handleImageSpreading}>Spread images</button>
         <canvas
           className={styles.moodboardCanvas}
           width={window.innerWidth - 240}
