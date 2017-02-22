@@ -99,7 +99,7 @@ export default class Moodboard extends PureComponent {
 
   @autobind
   handleMouseDown(e) {
-    for (let i = 0; i < this.state.images.length; i++) {
+    for (let i = this.state.images.length - 1; i > -1; i--) {
       const { x, y, width, height } = this.state.images[i]
       if (e.offsetX >= x && e.offsetX <= x + width &&
           e.offsetY >= y && e.offsetY <= y + height) {
