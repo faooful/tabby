@@ -18,7 +18,8 @@ export default class Moodboard extends PureComponent {
       draggedImageIndex: -1,
       mouseImageOffsetX: 0,
       mouseImageOffsetY: 0,
-      dragging: false
+      dragging: false,
+      imageSpreadTimeout: null
     }
   }
 
@@ -122,8 +123,55 @@ export default class Moodboard extends PureComponent {
 
   @autobind
   handleImageSpreading() {
-    this.setState({ images: spreadImages(this.state.images, this.canvas) })
-    this.redraw()
+    const { images, imageSpreadTimeout } = this.state
+    if (imageSpreadTimeout) {
+      clearTimeout(imageSpreadTimeout)
+    }
+    const newImages = spreadImages(images, this.canvas)
+    this.animateImageSpreading(images, newImages)
+  }
+
+  @autobind
+  setImageSpreadTimeout(imageSpreadTimeout) {
+    this.setState({ imageSpreadTimeout })
+  }
+
+  @autobind
+  animateImageSpreading(before, after) {
+    const { redraw, animateImageSpreading, setImageSpreadTimeout } = this
+    const imageSpreadTimeout = setTimeout(() => {
+      let finished = 0
+      for (let i = 0; i < before.length; i++) {
+        const xDifference = after[i].x - before[i].x
+        const yDifference = after[i].y - before[i].y
+        const widthDifference = after[i].width - before[i].width
+        const heightDifference = after[i].height - before[i].height
+        if (xDifference === 0 && yDifference === 0 &&
+            widthDifference === 0 && heightDifference === 0) {
+          finished++
+          continue
+        }
+        before[i].x += 0.05 * xDifference
+        before[i].y += 0.05 * yDifference
+        before[i].width += 0.05 * widthDifference
+        before[i].height += 0.05 * heightDifference
+        if (Math.abs(after[i].x - before[i].x) < 1 &&
+            Math.abs(after[i].y - before[i].y) < 1 &&
+            Math.abs(after[i].width - before[i].width) < 1 &&
+            Math.abs(after[i].height - before[i].height) < 1) {
+          before[i].x = after[i].x
+          before[i].y = after[i].y
+          before[i].width = after[i].width
+          before[i].height = after[i].height
+          finished++
+        }
+      }
+      redraw()
+      if (finished < before.length) {
+        animateImageSpreading(before, after)
+      }
+    }, 17)
+    setImageSpreadTimeout(imageSpreadTimeout)
   }
 
   render() {

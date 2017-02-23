@@ -1,7 +1,9 @@
 import shuffle from 'shuffle-array'
 
-export default function spreadImages(images, canvas) {
-  images.sort((a, b) => b.height - a.height)
+export default function spreadImages(originalImages, canvas) {
+  originalImages.sort((a, b) => b.height - a.height)
+  const images = cloneImages(originalImages)
+
   const rows = []
   const rowLengths = []
   let y = 0
@@ -14,6 +16,7 @@ export default function spreadImages(images, canvas) {
     rowLengths.push(images[i].width)
     i++
   }
+
   while (i < images.length) {
     const minRowLength = Reflect.apply(Math.min, null, rowLengths)
     const minRowLengthIndex = rowLengths.indexOf(minRowLength)
@@ -53,7 +56,6 @@ export default function spreadImages(images, canvas) {
   for (let j = 0; j < images.length; j++) {
     images[j].y *= expansionFactor
   }
-
   return images
 }
 
@@ -67,4 +69,13 @@ function shuffleImages(images) {
     image.x = x
     x += image.width
   }
+}
+
+function cloneImages(images) {
+  const clonedImages = []
+  for (let i = 0; i < images.length; i++) {
+    const { image, width, height, x, y } = images[i]
+    clonedImages.push({ image, width, height, x, y })
+  }
+  return clonedImages
 }
