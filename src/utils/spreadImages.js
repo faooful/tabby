@@ -56,6 +56,17 @@ export default function spreadImages(originalImages, canvas) {
   for (let j = 0; j < images.length; j++) {
     images[j].y *= expansionFactor
   }
+
+  for (let j = 0; j < rows.length; j++) {
+    const highestPointInNextRow = (j < rows.length - 1) ?
+      rows[j + 1].sort((a, b) => a.y - b.y)[0].y :
+      canvas.height
+    for (let k = 0; k < rows[j].length; k++) {
+      const randomOffset = Math.floor(Math.random() * (highestPointInNextRow - rows[j][k].y - rows[j][k].height))
+      rows[j][k].y += randomOffset
+    }
+  }
+
   return images
 }
 
