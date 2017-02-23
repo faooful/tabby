@@ -122,7 +122,7 @@ export default class Moodboard extends PureComponent {
 
   @autobind
   handleImageSpreading() {
-    this.setState({ images: spreadImages(this.state.images) })
+    this.setState({ images: spreadImages(this.state.images, this.canvas) })
     this.redraw()
   }
 
