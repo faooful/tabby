@@ -1,14 +1,27 @@
-import React, { PureComponent } from 'react'
+import React, { PureComponent, PropTypes } from 'react'
+import { connect } from 'react-redux'
+import { autobind } from 'core-decorators'
 import Moodboard from 'src/home/components/Moodboard.js'
 import MoodboardPreview from 'src/home/components/MoodboardPreview.js'
+import { setImageState } from '../../home/actions'
 
 import styles from 'src/home/components/HomePage.css'
 
+@connect()
 export default class HomePage extends PureComponent {
+  static propTypes = {
+    dispatch: PropTypes.func
+  }
+
   renderPreview(photo, title, date) {
     return (
       <MoodboardPreview className={styles.moodboardPreview} photo={photo} title={title} date={date} />
     )
+  }
+
+  @autobind
+  handleImageSpreading() {
+    this.props.dispatch(setImageState('SPREADING'))
   }
 
   render() {
@@ -29,6 +42,7 @@ export default class HomePage extends PureComponent {
       <div className={styles.HomePage}>
         <div className={styles.boardsPanel}>
           <p className={styles.subHeading}>BOARDS<span className={styles.titleLine}></span></p>
+          <button onClick={this.handleImageSpreading}>Spread images</button>
           <div className={styles.previewList}>
             {previewList.map((item, i) => {
               return this.renderPreview(item.photo, item.title, item.date)

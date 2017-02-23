@@ -1,13 +1,24 @@
 import React, { PureComponent, PropTypes } from 'react'
 import classNames from 'classnames'
+import { connect } from 'react-redux'
 import { autobind } from 'core-decorators'
 import spreadImages from '../../utils/spreadImages'
+import { setImageState } from '../../home/actions'
 
 import styles from 'src/home/components/Moodboard.css'
 
+function mapStateToProps(state) {
+  return {
+    imageState: state.home.imageState
+  }
+}
+
+@connect(mapStateToProps)
 export default class Moodboard extends PureComponent {
   static propTypes = {
-    className: PropTypes.string
+    className: PropTypes.string,
+    dispatch: PropTypes.func,
+    imageState: PropTypes.oneOf(['STATIC', 'SPREADING'])
   };
 
   constructor(props) {
@@ -33,6 +44,12 @@ export default class Moodboard extends PureComponent {
     this.canvas.addEventListener('mousemove', this.handleMouseMove, false)
     this.canvas.addEventListener('mousedown', this.handleMouseDown, false)
     this.canvas.addEventListener('mouseup', this.handleMouseUp, false)
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (this.props.imageState === 'STATIC' && nextProps.imageState === 'SPREADING') {
+      this.spreadImages()
+    }
   }
 
   getContext() {
@@ -122,8 +139,10 @@ export default class Moodboard extends PureComponent {
   }
 
   @autobind
-  handleImageSpreading() {
+  spreadImages() {
+    const { dispatch } = this.props
     const { images, imageSpreadTimeout } = this.state
+    dispatch(setImageState('STATIC'))
     if (imageSpreadTimeout) {
       clearTimeout(imageSpreadTimeout)
     }
@@ -179,7 +198,6 @@ export default class Moodboard extends PureComponent {
 
     return (
       <div className={computedClass}>
-        <button onClick={this.handleImageSpreading}>Spread images</button>
         <canvas
           className={styles.moodboardCanvas}
           width={window.innerWidth - 240}
