@@ -71,11 +71,24 @@ export default function spreadImages(originalImages, canvas) {
   for (let j = 0; j < rows.length; j++) {
     const totalRowWidth = rows[j].map(x => x.width).reduce((a, b) => a + b, 0)
     const unusedSpace = canvas.width - totalRowWidth
-    const gapWidth = unusedSpace / (rows[j].length + 1)
-    let x = gapWidth
+    const randomGapWidths = []
+    let totalRandomGapWidth = 0
+    for (let k = 0; k < rows[j].length + 1; k++) {
+      const remainingGapWidth = unusedSpace - totalRandomGapWidth
+      const gapWidth = remainingGapWidth / (rows[j].length + 1 - k)
+      const minGapWidth = 0.1 * gapWidth
+      const maxGapWidth = 1.9 * gapWidth
+      const randomGapWidth = Math.min(remainingGapWidth, Math.floor(Math.random() * (maxGapWidth - minGapWidth + 1)) + minGapWidth)
+      randomGapWidths.push(randomGapWidth)
+      totalRandomGapWidth += randomGapWidth
+      if (totalRandomGapWidth > unusedSpace) {
+        console.log('Something went wrong', totalRandomGapWidth, unusedSpace)
+      }
+    }
+    let x = randomGapWidths[0]
     for (let k = 0; k < rows[j].length; k++) {
       rows[j][k].x = x
-      x += rows[j][k].width + gapWidth
+      x += rows[j][k].width + randomGapWidths[k + 1]
     }
   }
 
