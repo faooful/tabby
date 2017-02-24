@@ -68,6 +68,17 @@ export default function spreadImages(originalImages, canvas) {
     }
   }
 
+  for (let j = 0; j < rows.length; j++) {
+    const totalRowWidth = rows[j].map(x => x.width).reduce((a, b) => a + b, 0)
+    const unusedSpace = canvas.width - totalRowWidth
+    const gapWidth = unusedSpace / (rows[j].length + 1)
+    let x = gapWidth
+    for (let k = 0; k < rows[j].length; k++) {
+      rows[j][k].x = x
+      x += rows[j][k].width + gapWidth
+    }
+  }
+
   return images
 }
 
