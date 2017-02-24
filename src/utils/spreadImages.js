@@ -43,6 +43,7 @@ export default function spreadImages(originalImages, canvas) {
       images[j].width *= reductionFactor
       images[j].height *= reductionFactor
     }
+    return spreadImages(images, canvas)
   }
 
   maxRowLength = Reflect.apply(Math.max, null, rowLengths)
