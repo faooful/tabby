@@ -1,12 +1,24 @@
 import React, { PureComponent, PropTypes } from 'react'
 import classNames from 'classnames'
+import { connect } from 'react-redux'
 import { autobind } from 'core-decorators'
+import spreadImages from '../../utils/spreadImages'
+import { setImageState } from '../../home/actions'
 
 import styles from 'src/home/components/Moodboard.css'
 
+function mapStateToProps(state) {
+  return {
+    imageState: state.home.imageState
+  }
+}
+
+@connect(mapStateToProps)
 export default class Moodboard extends PureComponent {
   static propTypes = {
-    className: PropTypes.string
+    className: PropTypes.string,
+    dispatch: PropTypes.func,
+    imageState: PropTypes.oneOf(['STATIC', 'SPREADING'])
   };
 
   constructor(props) {
@@ -17,7 +29,8 @@ export default class Moodboard extends PureComponent {
       draggedImageIndex: -1,
       mouseImageOffsetX: 0,
       mouseImageOffsetY: 0,
-      dragging: false
+      dragging: false,
+      imageSpreadTimeout: null
     }
   }
 
@@ -31,6 +44,12 @@ export default class Moodboard extends PureComponent {
     this.canvas.addEventListener('mousemove', this.handleMouseMove, false)
     this.canvas.addEventListener('mousedown', this.handleMouseDown, false)
     this.canvas.addEventListener('mouseup', this.handleMouseUp, false)
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (this.props.imageState === 'STATIC' && nextProps.imageState === 'SPREADING') {
+      this.spreadImages()
+    }
   }
 
   getContext() {
@@ -117,6 +136,61 @@ export default class Moodboard extends PureComponent {
   @autobind
   handleMouseUp() {
     this.setState({ dragging: false })
+  }
+
+  @autobind
+  spreadImages() {
+    const { dispatch } = this.props
+    const { images, imageSpreadTimeout } = this.state
+    dispatch(setImageState('STATIC'))
+    if (imageSpreadTimeout) {
+      clearTimeout(imageSpreadTimeout)
+    }
+    const newImages = spreadImages(images, this.canvas)
+    this.animateImageSpreading(images, newImages)
+  }
+
+  @autobind
+  setImageSpreadTimeout(imageSpreadTimeout) {
+    this.setState({ imageSpreadTimeout })
+  }
+
+  @autobind
+  animateImageSpreading(before, after) {
+    const { redraw, animateImageSpreading, setImageSpreadTimeout } = this
+    const imageSpreadTimeout = setTimeout(() => {
+      let finished = 0
+      for (let i = 0; i < before.length; i++) {
+        const xDifference = after[i].x - before[i].x
+        const yDifference = after[i].y - before[i].y
+        const widthDifference = after[i].width - before[i].width
+        const heightDifference = after[i].height - before[i].height
+        if (xDifference === 0 && yDifference === 0 &&
+            widthDifference === 0 && heightDifference === 0) {
+          finished++
+          continue
+        }
+        before[i].x += 0.05 * xDifference
+        before[i].y += 0.05 * yDifference
+        before[i].width += 0.05 * widthDifference
+        before[i].height += 0.05 * heightDifference
+        if (Math.abs(after[i].x - before[i].x) < 1 &&
+            Math.abs(after[i].y - before[i].y) < 1 &&
+            Math.abs(after[i].width - before[i].width) < 1 &&
+            Math.abs(after[i].height - before[i].height) < 1) {
+          before[i].x = after[i].x
+          before[i].y = after[i].y
+          before[i].width = after[i].width
+          before[i].height = after[i].height
+          finished++
+        }
+      }
+      redraw()
+      if (finished < before.length) {
+        animateImageSpreading(before, after)
+      }
+    }, 17)
+    setImageSpreadTimeout(imageSpreadTimeout)
   }
 
   render() {
