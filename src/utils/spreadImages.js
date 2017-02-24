@@ -85,6 +85,8 @@ export default function spreadImages(originalImages, canvas) {
         console.log('Something went wrong', totalRandomGapWidth, unusedSpace)
       }
     }
+
+    rows[j].sort((a, b) => a.x - b.x)
     let x = randomGapWidths[0]
     for (let k = 0; k < rows[j].length; k++) {
       rows[j][k].x = x
@@ -98,7 +100,7 @@ export default function spreadImages(originalImages, canvas) {
 function shuffleImages(images) {
   const indexes = images.map((_, i) => i)
   shuffle(indexes)
-  let x = images[0].x
+  let x = 0
   for (let i = 0; i < indexes.length; i++) {
     const randomIndex = indexes[i]
     const image = images[randomIndex]
